@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import { FontAwesome } from "@expo/vector-icons";
 
-const Recorder: React.FC = () => {
+export const Recorder: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingObject, setRecordingObject] =
     useState<Audio.Recording | null>(null);
