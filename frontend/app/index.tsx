@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Recorder from 'C:/Users/jonat/GitHub/breefli/frontend/components/Recorder.tsx'; // Adjust the path if Recorder.tsx is in a different directory
+import Recorder from '@/components/Recorder'; // Adjust the path if Recorder.tsx is in a different directory
 
 export default function Index() {
   return (
