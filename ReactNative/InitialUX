@@ -1,0 +1,235 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+
+const Tab = createBottomTabNavigator();
+
+const HomeScreen = () => (
+  <View style={styles.container}>
+    <Text style={styles.title}>Tap to Breef</Text>
+    <TouchableOpacity style={styles.breefButton}>
+      <Ionicons name="mic" size={64} color="#4CAF50" />
+    </TouchableOpacity>
+    <View style={styles.recentBreefs}>
+      <Text style={styles.recentTitle}>My Breefs</Text>
+      <Text style={styles.recentSubtitle}>4 Breefs</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {[...Array(4)].map((_, i) => (
+          <View key={i} style={styles.breefThumbnail} />
+        ))}
+      </ScrollView>
+    </View>
+  </View>
+);
+
+const MyBreefsScreen = () => (
+  <ScrollView style={styles.container}>
+    <Text style={styles.title}>My Breefs</Text>
+    <View style={styles.listItem}>
+      <Ionicons name="musical-note" size={24} color="#4CAF50" />
+      <Text style={styles.listItemText}>Breefs</Text>
+      <Text style={styles.listItemCount}>4</Text>
+      <Ionicons name="chevron-forward" size={24} color="#4CAF50" />
+    </View>
+    <View style={styles.listItem}>
+      <Ionicons name="ticket" size={24} color="#4CAF50" />
+      <Text style={styles.listItemText}>Concerts</Text>
+      <Text style={styles.listItemNew}>NEW</Text>
+      <Ionicons name="chevron-forward" size={24} color="#4CAF50" />
+    </View>
+    <Text style={styles.sectionTitle}>Recent Breefs</Text>
+    <View style={styles.recentGrid}>
+      {[...Array(4)].map((_, i) => (
+        <View key={i} style={styles.recentGridItem} />
+      ))}
+    </View>
+  </ScrollView>
+);
+
+const SettingsScreen = () => (
+  <ScrollView style={styles.container}>
+    <Text style={styles.title}>Settings</Text>
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Streaming</Text>
+      <View style={styles.listItem}>
+        <Image source={{uri: 'https://placeholder.com/30x30'}} style={styles.icon} />
+        <Text style={styles.listItemText}>Apple Music</Text>
+        <TouchableOpacity style={styles.tryNowButton}>
+          <Text style={styles.tryNowText}>Try now</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.listItem}>
+        <Image source={{uri: 'https://placeholder.com/30x30'}} style={styles.icon} />
+        <Text style={styles.listItemText}>Spotify</Text>
+        <TouchableOpacity style={styles.connectButton}>
+          <Text style={styles.connectText}>Connect</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Preferences</Text>
+      {['iCloud Sync', 'Notifications', 'Location', 'Breef on app start', 'Haptic Feedback', 'Autoplay Videos'].map((item, index) => (
+        <View key={index} style={styles.listItem}>
+          <Text style={styles.listItemText}>{item}</Text>
+          <Ionicons name="chevron-forward" size={24} color="#4CAF50" />
+        </View>
+      ))}
+    </View>
+  </ScrollView>
+);
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'My Breefs') {
+              iconName = focused ? 'musical-notes' : 'musical-notes-outline';
+            } else if (route.name === 'Settings') {
+              iconName = focused ? 'settings' : 'settings-outline';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: '#4CAF50',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: false,
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="My Breefs" component={MyBreefsScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+    padding: 20,
+  },
+  title: {
+    fontFamily: 'Lobster',
+    fontSize: 32,
+    color: '#4CAF50',
+    marginBottom: 20,
+  },
+  breefButton: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#E0E0E0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  recentBreefs: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+  },
+  recentTitle: {
+    fontFamily: 'Lobster',
+    fontSize: 24,
+    color: '#4CAF50',
+  },
+  recentSubtitle: {
+    fontFamily: 'Lobster',
+    fontSize: 16,
+    color: '#9E9E9E',
+    marginBottom: 10,
+  },
+  breefThumbnail: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#E0E0E0',
+    marginRight: 10,
+    borderRadius: 5,
+  },
+  listItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  listItemText: {
+    fontFamily: 'Lobster',
+    fontSize: 18,
+    color: '#212121',
+    flex: 1,
+    marginLeft: 10,
+  },
+  listItemCount: {
+    fontFamily: 'Lobster',
+    fontSize: 16,
+    color: '#9E9E9E',
+    marginRight: 10,
+  },
+  listItemNew: {
+    fontFamily: 'Lobster',
+    fontSize: 14,
+    color: '#4CAF50',
+    marginRight: 10,
+  },
+  sectionTitle: {
+    fontFamily: 'Lobster',
+    fontSize: 20,
+    color: '#4CAF50',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  recentGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  recentGridItem: {
+    width: '48%',
+    aspectRatio: 1,
+    backgroundColor: '#E0E0E0',
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
+  tryNowButton: {
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 15,
+  },
+  tryNowText: {
+    fontFamily: 'Lobster',
+    color: '#FFFFFF',
+    fontSize: 14,
+  },
+  connectButton: {
+    backgroundColor: '#E0E0E0',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 15,
+  },
+  connectText: {
+    fontFamily: 'Lobster',
+    color: '#212121',
+    fontSize: 14,
+  },
+});
+
+export default App;
