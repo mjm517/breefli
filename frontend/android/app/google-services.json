@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "487177119433",
+    "firebase_url": "https://briefli-d10c2-default-rtdb.firebaseio.com",
+    "project_id": "briefli-d10c2",
+    "storage_bucket": "briefli-d10c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487177119433:android:45a86bc6c70a555af0cf18",
+        "android_client_info": {
+          "package_name": "com.hackathon14.briefli"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWSp3W9DbaNCZEsVmXteF_j9Mx_56vBFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
