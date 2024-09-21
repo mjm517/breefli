@@ -5,6 +5,9 @@ yarn-error.log
 # Bundle artifacts
 *.jsbundle
 
+# Firebase
+Firebase/
+
 # Expo
 .expo/
 web-build/
