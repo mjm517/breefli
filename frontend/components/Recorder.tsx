@@ -31,23 +31,57 @@ export const Recorder: React.FC = () => {
     }
   };
 
+  // const stopRecording = async () => {
+  //   try {
+  //     await recordingObject?.stopAndUnloadAsync();
+  //     const uri = recordingObject?.getURI();
+  //     setIsRecording(false);
+
+  //     // Here you would typically send the audio file (uri) to your backend for processing
+  //     console.log("Recording stopped and stored at", uri);
+  //   } catch (error) {
+  //     console.error("Failed to stop recording", error);
+  //   }
+  // };
+
   const stopRecording = async () => {
     try {
       await recordingObject?.stopAndUnloadAsync();
       const uri = recordingObject?.getURI();
       setIsRecording(false);
-
-      // Here you would typically send the audio file (uri) to your backend for processing
-      console.log("Recording stopped and stored at", uri);
+  
+      if (uri) {
+        console.log("Recording stopped and stored at", uri);
+  
+        // Send the URI to your API
+        const response = await fetch('https://your-api-url.com/upload', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ audioUri: uri }), // Adjust your payload as needed
+        });
+  
+        if (response.ok) {
+          const jsonResponse = await response.json();
+          console.log("Upload successful:", jsonResponse);
+        } else {
+          console.error("Upload failed:", response.status, response.statusText);
+        }
+      }
     } catch (error) {
       console.error("Failed to stop recording", error);
     }
   };
+  
+
 
   useEffect(() => {
     return () => {
       if (recordingObject) {
-        recordingObject.stopAndUnloadAsync();
+        recordingObject.stopAndUnloadAsync().catch(error => {
+          console.warn("Error unloading recording:", error);
+        });
       }
     };
   }, [recordingObject]);
