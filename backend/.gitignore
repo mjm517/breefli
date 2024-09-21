@@ -7,8 +7,10 @@ __pycache__/
 venv/
 env/
 .env
+.venv/
 
 # IDE
+
 .vscode/
 .idea/
 
