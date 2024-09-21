@@ -18,6 +18,8 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.hackathon14.briefli",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -25,6 +27,20 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "googleServicesFile": "./GoogleService-Info.plist",
+            "bundleIdentifier": "com.mycorp.myapp",
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ]
   }
 }
