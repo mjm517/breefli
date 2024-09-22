@@ -1,49 +1,71 @@
-import React from "react";
-// import { useAuth } from "../components/AuthContext";
-import * as Linking from "expo-linking";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { BASE_URL } from "../config"; // url for backend
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const BaseStack = createNativeStackNavigator();
+import Login from "./Screens/Login";
+import Recorder from "./Screens/RecorderScreen";
+import Library from "./Screens/Library";
+import Signup from "./Screens/Signup";
+
+const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  // const authContext = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check for the user's login state
+    checkLoginState();
+  }, []);
+
+  const checkLoginState = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      setIsLoggedIn(userToken != null);
+    } catch (e) {
+      // Handle error
+      console.error("Failed to get user token:", e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    // You might want to show a loading screen here
+    return null;
+  }
 
   return (
     <NavigationContainer>
-      <BaseStack.Navigator
+      <Stack.Navigator
         screenOptions={{ headerTitle: "", headerShown: false }}
+        initialRouteName={isLoggedIn ? "Recorder" : "Login"}
       >
-        {/* {authContext.state.user == null ? ( // if user is not logged in */}
-        <>
-          <BaseStack.Screen
-            name="Login"
-            component={Login}
-          />
-          <BaseStack.Screen
-            name="Signup"
-            component={Signup}
-          />
-          <BaseStack.Screen
-            name="NewUser"
-            component={NewUser}
-          />
-        </>
-        {/* ) : authContext.state.user.user_group == "client" ? ( IF USER IS LOGGED IN*/}
-        <>
-          <BaseStack.Screen
-            name="Recorder"
-            component={Recorder}
-          />
-          <BaseStack.Screen
-            name="Library"
-            component={Library}
-          />
-        </>
-        {/* )} */}
-      </BaseStack.Navigator>
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen
+              name="Recorder"
+              component={Recorder}
+            />
+            <Stack.Screen
+              name="Library"
+              component={Library}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={Signup}
+            />
+          </>
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
