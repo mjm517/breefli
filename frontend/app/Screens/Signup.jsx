@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -13,9 +14,11 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const navigation = useNavigation();
+
   const handleSignup = () => {
-    // Implement signup logic here
-    console.log("Sign up clicked");
+    // For now, just navigate to the Recorder screen
+    navigation.navigate("Recorder");
   };
 
   return (
