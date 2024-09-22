@@ -1,37 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Audio } from "expo-av";
 import { FontAwesome } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
-import { Platform } from "react-native";
 
 export const RecorderScreen = () => {
-  const [panelHeight] = useState(new Animated.Value(100));
   const [isRecording, setIsRecording] = useState(false);
   const [recordingObject, setRecordingObject] = useState(null);
   const [sound, setSound] = useState();
   const [recordings, setRecordings] = useState([]);
-
-  const handleSwipeUp = () => {
-    Animated.spring(panelHeight, {
-      toValue: 300,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const handleSwipeDown = () => {
-    Animated.spring(panelHeight, {
-      toValue: 100,
-      useNativeDriver: false,
-    }).start();
-  };
 
   const startRecording = async () => {
     try {
@@ -136,45 +113,27 @@ export const RecorderScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.mainButton}
-        onPress={isRecording ? stopRecording : startRecording}
-      >
-        <FontAwesome
-          name={isRecording ? "stop-circle" : "microphone"}
-          size={64}
-          color={isRecording ? "red" : "white"}
-        />
-        <Text style={styles.buttonText}>
-          {isRecording ? "Stop" : "Tap to Shazam"}
-        </Text>
-      </TouchableOpacity>
-
-      <Animated.View style={[styles.swipePanel, { height: panelHeight }]}>
-        <View style={styles.swipeHandle} />
-        <TouchableOpacity onPress={handleSwipeUp}>
-          <Text style={styles.swipePanelText}>
-            {isRecording ? "Recording..." : "Swipe up for history"}
+      <View style={styles.content}>
+        <TouchableOpacity
+          style={styles.mainButton}
+          onPress={isRecording ? stopRecording : startRecording}
+        >
+          <FontAwesome
+            name={isRecording ? "stop-circle" : "microphone"}
+            size={64}
+            color={isRecording ? "red" : "white"}
+          />
+          <Text style={styles.buttonText}>
+            {isRecording ? "Stop" : "Tap to Shazam"}
           </Text>
         </TouchableOpacity>
-        <ScrollView style={styles.recordingsList}>
-          {recordings.map((recording, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.recordingItem}
-              onPress={() => playRecording(recording.uri)}
-            >
-              <Text>{recording.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <TouchableOpacity
-          onPress={handleSwipeDown}
-          style={styles.closeButton}
-        >
-          <Text>Close</Text>
-        </TouchableOpacity>
-      </Animated.View>
+      </View>
+      <TouchableOpacity
+        style={styles.fullWidthButton}
+        onPress={() => navigation.navigate("Library")}
+      >
+        <Text style={styles.fullWidthButtonText}>Go to Library</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -182,9 +141,13 @@ export const RecorderScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "space-between", // This will push content to top and bottom
+    backgroundColor: "#f0f0f0",
+  },
+  content: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
   },
   mainButton: {
     width: 200,
@@ -234,6 +197,19 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
+  },
+  fullWidthButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    elevation: 5,
+  },
+  fullWidthButtonText: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 
